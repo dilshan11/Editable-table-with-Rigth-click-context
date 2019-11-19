@@ -1,3 +1,4 @@
+<div>
 <div class="d-flex">
     <div style="width: 15%;height: 1000px;border-right-style: solid;">
         <div class="container-fluid">
@@ -11,10 +12,10 @@
   
   
   
-    <div style="width:85%;height: 1000px;">
+    <div style="width:85%;height: 1000px;" >
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-12 "  style="height: 110px;border-bottom-style: solid;">
+          <div (mouseover)="offtheOverlay()" class="col-md-12 "  style="height: 110px;border-bottom-style: solid;">
   
   
           </div>
@@ -22,16 +23,17 @@
       </div>  
       <div class="container-fluid">
           <div class="row">
-            <div class="col-md-12 "  style="height: 1000px">
+            <div class="col-md-12"   style="height: 1000px">
                 
-       
+              <h1>{{check}}</h1>
+
           <table class="table table-bordered table-responsive-md table-striped text-center">
             <tr>
-                <th *ngFor="let a of topic" class="text-center">{{a}}</th>
+                <th contenteditable="true" *ngFor="let a of topic" class="text-center">{{a}}</th>
             
-              <tr   *ngFor="let d of content; let rid = index">
-                  <td *ngFor="let c of d; let cid = index" [contextMenu]="basicMenu" [contextMenuSubject]="{cid:cid,rid:rid,v:c}">
-                    <span (keyup)="changeValue(id, 'name', $event)" (blur)="updateList(id, 'name', $event)" contenteditable="true">{{c}}</span>
+              <tr   *ngFor="let d of content2; let rid = index">
+                  <td  *ngFor="let c of d; let cid = index" [style.backgroundColor]="c.colur" [contextMenu]="basicMenu" [contextMenuSubject]="{cid:cid,rid:rid,v:c}" (mouseover)='over(cid,rid,c,$event,com)'>
+                    <span #ass  (keyup)="changeValue(cid,rid,c,$event,ass)" (blur)="updateList(id, 'name', $event)" contenteditable="true">{{c.name}}</span>
                   </td>
               </tr>
               
@@ -47,16 +49,21 @@
   
    
   <context-menu>
-    <ng-template contextMenuItem (execute)="showMessage( $event)" >
+    <ng-template contextMenuItem (execute)="addcolumn( $event)" >
      insert Column
     </ng-template>
     <ng-template contextMenuItem divider="true"></ng-template>
    
 
-    <ng-template contextMenuItem (execute)="showMessage( $event)" >
+    <ng-template contextMenuItem (execute)="addcomment( $event)"  >
     add Comment 
      </ng-template>
-   
+     
+
+     
+
+    
+ 
      <ng-template contextMenuItem divider="true"></ng-template>
   
      <ng-template contextMenuItem (execute)="showMessage( $event)" >
@@ -64,18 +71,66 @@
      </ng-template>
      <ng-template contextMenuItem divider="true"></ng-template>
   
-     <ng-template contextMenuItem (execute)="showMessage( $event)" >
+     <ng-template contextMenuItem (execute)="showMessage( $event)" [subMenu]="subMenuMove" >
       change Colur 
      </ng-template>
      <ng-template contextMenuItem divider="true"></ng-template>
+
+
+     // start submenu
+     <context-menu #subMenuMove>
+      <ng-template contextMenuItem>
+         
+        <button type="button" class="btn btn-primary m-2" (click)="changeColur($event)">Primary</button>
+        <button type="button" class="btn btn-secondary m-2">Secondary</button>
+        <button type="button" class="btn btn-success m-2">Success</button>
+        <button type="button" class="btn btn-danger m-2">Danger</button>
+      </ng-template>
+      <ng-template contextMenuItem>
+        Left
+      </ng-template>
+    </context-menu>
+    //end of sub menu
   
-  
+
+
     <ng-template contextMenuItem let-item  >
       Bye, {{item?.c}}
     </ng-template>
-    <!-- <ng-template contextMenuItem divider="true"></ng-template> -->
+    <!-- <ng-template contextMenuItem divider="true"></ng-template>
   
-    <!-- <ng-template contextMenuItem passive="true">
+    <ng-template contextMenuItem passive="true">
       Input something: <input type="text">
     </ng-template> -->
   </context-menu>
+
+
+
+  <div id="overlay" #com contenteditable="true">{{commentText}}</div>
+ 
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
